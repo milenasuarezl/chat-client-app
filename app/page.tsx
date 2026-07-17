@@ -1,13 +1,5 @@
-import styles from "./page.module.css";
+import { Chat } from "@/features/Chat";
 
-const Home = () => {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        Chat App
-      </main>
-    </div>
-  );
-}
+const Home = () => <Chat />;
 
 export default Home;
