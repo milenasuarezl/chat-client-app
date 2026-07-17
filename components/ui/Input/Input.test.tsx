@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Input } from "./Input";
 import styles from "./Input.module.css";
-import utilStyles from "@/util/visuallyHidden.module.css";
+import utilStyles from "@/utils/visuallyHidden.module.css";
 
 describe("Input", () => {
   it("renders with an accessible label independent of placeholder", () => {
