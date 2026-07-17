@@ -1,0 +1,38 @@
+.composer {
+  --color-composer-bg: #4a94d9;
+
+  background-color: var(--color-composer-bg);
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (prefers-color-scheme: dark) {
+  .composer {
+    --color-composer-bg: #2b5c8a;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.inputField {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .composer {
+    padding: var(--space-sm) var(--space-sm);
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .row {
+    gap: var(--space-sm);
+  }
+}
