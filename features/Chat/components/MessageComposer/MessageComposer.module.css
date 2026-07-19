@@ -2,8 +2,10 @@
   --color-composer-bg: #4a94d9;
 
   background-color: var(--color-composer-bg);
-  padding: var(--space-md) var(--space-lg);
+  padding-block: var(--space-md);
   padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,12 +15,11 @@
 }
 
 .row {
+  composes: container from "../../Chat.module.css";
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  width: 100%;
-  max-width: var(--content-max-width);
-  margin: 0 auto;
+  padding-inline: var(--space-xl);
 }
 
 .inputField {
@@ -28,11 +29,14 @@
 
 @media (max-width: 600px) {
   .composer {
-    padding: var(--space-sm) var(--space-sm);
+    padding-block: var(--space-sm);
     padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+    overflow: visible;
+    scrollbar-gutter: auto;
   }
 
   .row {
     gap: var(--space-sm);
+    padding-inline: var(--space-sm);
   }
 }
