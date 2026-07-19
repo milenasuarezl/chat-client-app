@@ -6,9 +6,17 @@ export const Button = ({
   children,
   className,
   type = "button",
+  variant = "solid",
+  size = "md",
   ...rest
 }: ButtonProps) => {
-  const classNames = [styles.button, focusStyles.focusVisible, className]
+  const classNames = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    focusStyles.focusVisible,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 

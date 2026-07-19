@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MessageList } from "./components/MessageList";
 import { MessageComposer } from "./components/MessageComposer";
+import { Banner } from "@/components/ui/Banner";
 import { useMessages } from "./hooks/useMessages";
 import { useSendMessage } from "./hooks/useSendMessage";
 import styles from "./Chat.module.css";
@@ -42,6 +43,11 @@ export const ChatClient = ({ initialMessages }: ChatClientProps) => {
     }
   };
 
+  const dismissSendError = () => {
+    setSendError(null);
+    setLastFailedText(null);
+  };
+
   return (
     <main className={styles.chat} aria-label="Chat">
       <div className={styles.scroll}>
@@ -50,6 +56,33 @@ export const ChatClient = ({ initialMessages }: ChatClientProps) => {
           <div ref={bottomRef} aria-hidden="true" className={styles.bottomAnchor} />
         </div>
       </div>
+
+      {(pollError || sendError) && (
+        <div className={styles.banners}>
+          {pollError && (
+            <Banner
+              action={{
+                label: isValidating ? "Retrying…" : "Retry",
+                onClick: () => void mutate(),
+              }}
+            >
+              Couldn’t refresh messages. Check your connection.
+            </Banner>
+          )}
+          {sendError && (
+            <Banner
+              action={
+                lastFailedText
+                  ? { label: "Retry", onClick: () => void handleSend(lastFailedText) }
+                  : undefined
+              }
+              onDismiss={dismissSendError}
+            >
+              {sendError}
+            </Banner>
+          )}
+        </div>
+      )}
 
       <MessageComposer onSend={handleSend} />
     </main>
