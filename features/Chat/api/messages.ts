@@ -1,13 +1,12 @@
+import { apiFetch } from "@/lib/api/http";
 import type {
   CreateMessageRequest,
   GetMessagesParams,
   Message,
   MessageResponse,
-} from "@/lib/types";
-import { apiFetch } from "./http";
+} from "../types";
 import { toMessage } from "./mappers";
 
-// Fetches messages and returns them sorted oldest.
 export const fetchMessages = async (
   params: GetMessagesParams = {},
 ): Promise<Message[]> => {
@@ -28,7 +27,6 @@ export const fetchMessages = async (
     .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
 };
 
-// Creates a new message and returns it in domain shape.
 export const createMessage = async (
   input: CreateMessageRequest,
 ): Promise<Message> => {

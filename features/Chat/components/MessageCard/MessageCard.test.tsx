@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { MessageCard } from "./MessageCard";
 import utilStyles from "@/utils/visuallyHidden.module.css";
-import type { Message } from "@/lib/types";
+import type { Message } from "@/features/Chat/types";
 
 const makeMessage = (overrides: Partial<Message> = {}): Message => ({
   id: "1",

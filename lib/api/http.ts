@@ -1,10 +1,11 @@
 import { config } from "@/lib/config";
+import { authHeaders } from "./auth";
 import { ApiError } from "./errors";
 
 /**
  * Thin, typed `fetch` wrapper for the chat API. Isomorphic: it runs on the
- * server (SSR) and in the browser (SWR polling), attaching the bearer token
- * from `config` to every request.
+ * server (SSR) and in the browser (SWR polling). Auth headers are supplied by
+ * `authHeaders()` so the transport stays agnostic to the auth scheme.
  *
  * SECURITY: because the client calls the API directly, the token is exposed to
  * the browser. See "Future improvements" in the README for hiding it behind a
@@ -22,7 +23,7 @@ export const apiFetch = async <T>(
       ...init,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiToken}`,
+        ...authHeaders(),
         ...init.headers,
       },
     });

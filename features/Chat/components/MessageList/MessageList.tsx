@@ -5,7 +5,7 @@ import { MessageCard } from "../MessageCard";
 import styles from "./MessageList.module.css";
 import utilStyles from "@/utils/visuallyHidden.module.css";
 import type { MessageListProps } from "./MessageList.types";
-import type { Message } from "@/lib/types";
+import type { Message } from "@/features/Chat/types";
 
 const LIST_LABEL = "Message history";
 

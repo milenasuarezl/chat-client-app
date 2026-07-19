@@ -1,5 +1,5 @@
 import type { HTMLAttributes, Ref } from "react";
-import type { Message } from "@/lib/types";
+import type { Message } from "@/features/Chat/types";
 
 export type MessageCardProps = {
   message: Message;

@@ -1,5 +1,5 @@
-import { CURRENT_USER } from "@/lib/constants";
-import type { Message, MessageResponse } from "@/lib/types";
+import { CURRENT_USER } from "../constants";
+import type { Message, MessageResponse } from "../types";
 
 /** Maps an API response into the domain `Message` the UI consumes. */
 export const toMessage = (dto: MessageResponse): Message => ({

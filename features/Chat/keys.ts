@@ -1,5 +1,6 @@
-import { fetchMessages } from "@/lib/api/messages";
-import type { Message } from "@/lib/types";
+import { fetchMessages } from "./api/messages";
+import { DEFAULT_MESSAGE_LIMIT } from "./constants";
+import type { Message } from "./types";
 
 /**
  * SWR cache key for the message list. `limit` is part of the key so SWR caches
@@ -7,6 +8,12 @@ import type { Message } from "@/lib/types";
  */
 export type MessagesKey = readonly ["messages", number];
 
+export const chatKeys = {
+  messages: (limit: number = DEFAULT_MESSAGE_LIMIT): MessagesKey => [
+    "messages",
+    limit,
+  ],
+} as const;
+
 export const messagesFetcher = ([, limit]: MessagesKey): Promise<Message[]> =>
   fetchMessages({ limit });
-

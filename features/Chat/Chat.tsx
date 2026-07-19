@@ -1,6 +1,6 @@
-import { fetchMessages } from "@/lib/api/messages";
-import { DEFAULT_MESSAGE_LIMIT } from "@/lib/constants";
-import type { Message } from "@/lib/types";
+import { fetchMessages } from "./api/messages";
+import { DEFAULT_MESSAGE_LIMIT } from "./constants";
+import type { Message } from "./types";
 import { ChatClient } from "./ChatClient";
 
 export const Chat = async () => {
