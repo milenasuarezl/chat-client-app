@@ -4,7 +4,11 @@ import useSWRMutation from "swr/mutation";
 
 import { ApiError, isApiError } from "@/lib/api/errors";
 import { createMessage } from "../api/messages";
-import { CURRENT_USER, DEFAULT_MESSAGE_LIMIT } from "../constants";
+import {
+  CURRENT_USER,
+  DEFAULT_MESSAGE_LIMIT,
+  OPTIMISTIC_ID_PREFIX,
+} from "../constants";
 import { chatKeys, type MessagesKey } from "../keys";
 import type { Message } from "../types";
 
@@ -39,7 +43,7 @@ export const useSendMessage = (limit: number = DEFAULT_MESSAGE_LIMIT) => {
     if (!trimmed) return;
 
     const optimistic: Message = {
-      id: `optimistic-${crypto.randomUUID()}`,
+      id: `${OPTIMISTIC_ID_PREFIX}${crypto.randomUUID()}`,
       author: CURRENT_USER,
       text: trimmed,
       timestamp: new Date().toISOString(),

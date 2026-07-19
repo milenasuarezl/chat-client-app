@@ -45,7 +45,7 @@ describe("useMessages", () => {
     renderHook(() => useMessages(), { wrapper: createWrapper() });
 
     await waitFor(() =>
-      expect(mockedFetchMessages).toHaveBeenCalledWith({ limit: 20 }),
+      expect(mockedFetchMessages).toHaveBeenCalledWith({ limit: 50 }),
     );
   });
 

@@ -26,9 +26,11 @@ pnpm lint     # run ESLint
   change based on the sender (white/left for others, pale yellow/right for you (current user)).
 - Styling uses **CSS Modules** per component, with shared design tokens
   (colours, spacing, sizes) defined in `app/globals.css`.
-- Data comes from the challenge API: the messages are fetched during
-  **SSR**, then **SWR** short-polls every 3s to stay fresh; sending uses an
-  optimistic `POST` with automatic rollback.
+- Data comes from the challenge API: the newest messages are fetched during
+  **SSR**, then **SWR** polls every 3s to stay fresh incrementally, using the
+  `after` cursor to request only messages newer than the ones already in view and
+  merging them into the cache. Sending uses an optimistic `POST` with automatic
+  rollback.
 - Couldn't find a public design system for Doodle. Then I created Design-system 
   primitives that live in **`components/ui/`** (`Button`, `Input`, `Banner`) — reusable and domain-agnostic. 
 - Feature-specific components live under their feature (`features/Chat/components/`). This keeps `lib/` and the
@@ -41,7 +43,7 @@ UI kit stable as features come and go.
 | Layer | Type | Why |
 | --- | --- | --- |
 | `app/page.tsx` | Server Component | Thin route wrapper that renders the Chat feature. |
-| `Chat` | Server Component | Owns the SSR fetch (first 20 messages) so the first paint already contains messages, then hands off to `ChatClient`. |
+| `Chat` | Server Component | Owns the SSR fetch (newest messages) so the first paint already contains messages, then hands off to `ChatClient`. |
 | `ChatClient` | Client Component | Holds the SWR-backed list, polls, sends messages, shows error banners, and auto-scrolls — all of which need the browser. |
 | `MessageComposer` | Client Component | Owns the controlled input and submit handling. |
 | `MessageList` | Client Component | Manages the feed's roving-tabindex focus and arrow-key keyboard navigation (see [Accessibility](#accessibility)). |
@@ -56,7 +58,7 @@ app/page.tsx (server)
   └─ <Chat> (server)                 owns the SSR fetch
        └─ fetchMessages({ limit })   ← features/Chat/api/messages.ts (calls the API)
             └─ <ChatClient initialMessages>  (client; SWR seeded via fallbackData)
-                 ├─ useMessages()    → SWR short-polls every 3s via messagesFetcher
+                 ├─ useMessages()    → seeds from SSR, then polls every 3s with the `after` cursor (incremental)
                  ├─ useSendMessage() → optimistic createMessage() + rollback
                  ├─ <MessageList>    → <MessageCard> (colour by sender)
                  └─ <MessageComposer>→ <Input> + <Button> bottom bar
@@ -94,12 +96,12 @@ features/
     ChatClient.tsx      Interactive client component
     keys.ts             SWR tuple keys + messagesFetcher (colocated)
     types.ts            Domain Message + API DTOs
-    constants.ts        CURRENT_USER, message limit, poll interval
+    constants.ts        CURRENT_USER, message limits, poll interval, optimistic id prefix
     api/
-      messages.ts       fetchMessages() / createMessage()
+      messages.ts       fetchMessages() / createMessage() / mergeMessages()
       mappers.ts        DTO → domain Message
     hooks/
-      useMessages.ts    SWR polling, seeded by SSR fallbackData
+      useMessages.ts    Incremental `after`-cursor polling, seeded by SSR fallbackData
       useSendMessage.ts Optimistic create + rollback
     components/
       MessageList/      Renders the history as a list
@@ -205,5 +207,3 @@ non-sensitive token) but not for production. The fix is a **backend-for-frontend
 ### Other ideas
 
 - **Real-time updates** — swap short-polling for WebSockets/SSE.
-- **History / pagination** — `GetMessagesParams` already exposes `before`/`after`
-  for infinite scroll of older messages.
