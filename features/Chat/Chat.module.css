@@ -1,0 +1,65 @@
+.chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+}
+
+.inner {
+  composes: container;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 0 var(--space-xl) var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .inner {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
+
+.banners {
+  composes: container;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg) 0;
+}
+
+@media (max-width: 600px) {
+  .banners {
+    padding: var(--space-sm) var(--space-md) 0;
+  }
+}
+
+.bottomAnchor {
+  /* Auto-scroll aligns this anchor to the scroll container's bottom edge.
+     Matching .inner's bottom padding keeps that padding in view so the newest
+     message never sits flush against the MessageComposer. */
+  scroll-margin-block-end: var(--space-xl);
+}
+
+@media (max-width: 600px) {
+  .bottomAnchor {
+    scroll-margin-block-end: var(--space-lg);
+  }
+}

@@ -11,7 +11,6 @@ export const Chat = async () => {
   } catch {
     // Fail open — client polling will recover.
   }
-
-  // TODO
+  
   return <ChatClient initialMessages={initialMessages} />;
 };
