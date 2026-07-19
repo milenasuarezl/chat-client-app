@@ -17,8 +17,8 @@
 
 @media (prefers-color-scheme: dark) {
   .card {
-    --color-own-bg: #3a3720;
-    --color-own-border: #4a4526;
+    --color-own-bg: #302d1a;
+    --color-own-border: #423e24;
   }
 }
 
